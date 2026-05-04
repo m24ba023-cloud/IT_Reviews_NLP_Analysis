@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -63,11 +62,11 @@ st.markdown("""
 
 # ── Header ─────────────────────────────────────────
 st.markdown(
-    "<div class=\'main-header\'>📊 IT Customer Reviews — NLP Analytics Dashboard</div>",
+    "<div class='main-header'>📊 IT Customer Reviews — NLP Analytics Dashboard</div>",
     unsafe_allow_html=True
 )
 st.markdown(
-    "<div class=\'sub-header\'>Powered by RoBERTa • SBERT • HDBSCAN • Sentence Embeddings</div>",
+    "<div class='sub-header'>Powered by RoBERTa • SBERT • HDBSCAN • Sentence Embeddings</div>",
     unsafe_allow_html=True
 )
 
@@ -158,8 +157,8 @@ total  = len(filtered)
 pos    = len(filtered[filtered["Sentiment_Label"]=="Positive"])
 neg    = len(filtered[filtered["Sentiment_Label"]=="Negative"])
 neu    = len(filtered[filtered["Sentiment_Label"]=="Neutral"])
-avg_rt = round(filtered["Rating"].mean(), 2)
-avg_css= round(filtered["CSS"].mean(), 3) if "CSS" in filtered.columns else "N/A"
+avg_rt = round(filtered["Rating"].mean(), 2) if total else 0
+avg_css= round(filtered["CSS"].mean(), 3) if "CSS" in filtered.columns and total else "N/A"
 
 c1,c2,c3,c4,c5,c6 = st.columns(6)
 c1.metric("📝 Total Reviews",  total)
@@ -208,7 +207,7 @@ with tab1:
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-        rating_counts = filtered["Rating"].value_counts()                                          .sort_index()
+        rating_counts = filtered["Rating"].value_counts().sort_index()
         fig2 = px.bar(
             x=rating_counts.index,
             y=rating_counts.values,
@@ -278,7 +277,7 @@ with tab2:
             )
             st.plotly_chart(fig2, use_container_width=True)
 
-        # Sunburst chart — dynamic
+        # Sunburst chart
         st.subheader("Issue × Sentiment — Sunburst")
         sun_data = filtered.groupby(
             ["Issue_Category","Sentiment_Label"]
@@ -322,7 +321,7 @@ with tab3:
             filtered["Sentiment_Label"] == wc_sent
         ]
 
-    text_col = "processed_text" if "processed_text"                in filtered.columns else "Review_Text"
+    text_col = "processed_text" if "processed_text" in filtered.columns else "Review_Text"
     text = " ".join(
         wc_data[text_col].dropna().astype(str)
     )
@@ -404,6 +403,7 @@ with tab4:
     if "CSS" in filtered.columns:
         col1, col2 = st.columns(2)
         with col1:
+            # Using lowess trendline — no statsmodels dependency needed
             fig2 = px.scatter(
                 filtered,
                 x="Rating", y="CSS",
@@ -415,7 +415,7 @@ with tab4:
                 },
                 title="Rating vs CSS Score",
                 opacity=0.6,
-                trendline="ols"
+                trendline="lowess"
             )
             st.plotly_chart(fig2, use_container_width=True)
 
@@ -486,7 +486,7 @@ with tab5:
         st.image(
             img,
             caption="HDBSCAN + UMAP Cluster Visualization",
-            use_column_width=True
+            use_container_width=True
         )
     except:
         st.warning(
@@ -598,7 +598,7 @@ with tab6:
         st.image(
             img,
             caption="RoBERTa Confusion Matrix",
-            use_column_width=True
+            use_container_width=True
         )
     except:
         pass
@@ -637,5 +637,4 @@ with tab7:
         st.metric(
             "Reviews in current filter",
             len(filtered),
-            f"{round(len(filtered)/len(df)*100,1)}% of total"
         )
