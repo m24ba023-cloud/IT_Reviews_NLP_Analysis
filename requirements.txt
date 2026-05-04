@@ -10,5 +10,5 @@ textblob
 vaderSentiment
 scikit-learn
 openpyxl
-Pillow==9.5.0
+Pillow>=10.4.0
 scipy
