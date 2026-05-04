@@ -415,8 +415,7 @@ with tab4:
                 },
                 title="Rating vs CSS Score",
                 opacity=0.6,
-                trendline="lowess"
-            )
+                trendline="lowess")
             st.plotly_chart(fig2, use_container_width=True)
 
         with col2:
