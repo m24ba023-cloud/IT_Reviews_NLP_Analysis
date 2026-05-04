@@ -1,0 +1,14 @@
+streamlit==1.28.0
+pandas
+numpy
+plotly
+matplotlib
+seaborn
+wordcloud
+nltk
+textblob
+vaderSentiment
+scikit-learn
+openpyxl
+Pillow
+scipy
