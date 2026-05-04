@@ -1,6 +1,6 @@
-streamlit==1.43.0
+streamlit>=1.40.0
 pandas
-numpy
+numpy>=2.0
 plotly
 matplotlib
 seaborn
@@ -10,5 +10,6 @@ textblob
 vaderSentiment
 scikit-learn
 openpyxl
-Pillow
+Pillow>=11.0
 scipy
+statsmodels
