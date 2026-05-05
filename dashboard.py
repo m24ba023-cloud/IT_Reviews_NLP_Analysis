@@ -74,9 +74,12 @@ st.markdown(
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_excel("reviews_updated_pipeline.xlsx")
+        df = pd.read_excel("reviews_dashboard_1500.xlsx")
     except:
-        df = pd.read_excel("reviews_FINAL_complete.xlsx")
+        try:
+            df = pd.read_excel("reviews_updated_pipeline.xlsx")
+        except:
+            df = pd.read_excel("reviews_FINAL_complete.xlsx")
     return df
 
 df = load_data()
